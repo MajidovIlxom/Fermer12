@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecordOfIlnessDto } from './dto/create-record_of_ilness.dto';
 import { UpdateRecordOfIlnessDto } from './dto/update-record_of_ilness.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { RecordDocument, RecordOfIlness } from './schemas/record_of_ilness.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class RecordOfIlnessService {
+  constructor(@InjectModel(RecordOfIlness.name) private readonly RecordOdIlessModel: Model<RecordDocument>){}
+
   create(createRecordOfIlnessDto: CreateRecordOfIlnessDto) {
-    return 'This action adds a new recordOfIlness';
+    return this.RecordOdIlessModel.create(createRecordOfIlnessDto);
   }
 
   findAll() {
-    return `This action returns all recordOfIlness`;
+    return this.RecordOdIlessModel.find()
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} recordOfIlness`;
+    return this.RecordOdIlessModel.findOne({id});
   }
 
   update(id: number, updateRecordOfIlnessDto: UpdateRecordOfIlnessDto) {
-    return `This action updates a #${id} recordOfIlness`;
+    return this.RecordOdIlessModel.findByIdAndUpdate({id}, updateRecordOfIlnessDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} recordOfIlness`;
+    return this.RecordOdIlessModel.deleteOne({id});
   }
 }

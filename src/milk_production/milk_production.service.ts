@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMilkProductionDto } from './dto/create-milk_production.dto';
 import { UpdateMilkProductionDto } from './dto/update-milk_production.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { MilkProduction, MilkProductionDocument } from './schemas/milk_production.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class MilkProductionService {
+  constructor(@InjectModel(MilkProduction.name) private readonly milkProducModel: Model<MilkProductionDocument>){}
+
   create(createMilkProductionDto: CreateMilkProductionDto) {
-    return 'This action adds a new milkProduction';
+    return this.milkProducModel.create(createMilkProductionDto);
   }
 
   findAll() {
-    return `This action returns all milkProduction`;
+    return this.milkProducModel.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} milkProduction`;
+    return this.milkProducModel.findById(id);
   }
 
   update(id: number, updateMilkProductionDto: UpdateMilkProductionDto) {
-    return `This action updates a #${id} milkProduction`;
+    return this.milkProducModel.findByIdAndUpdate({id}, updateMilkProductionDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} milkProduction`;
+    return this.milkProducModel.deleteOne({id});
   }
 }

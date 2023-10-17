@@ -21,7 +21,6 @@ export class AdminController {
   findAll() {
     return this.adminService.findAll();
   }
-
   
   @ApiOperation({summary: "Get One Admin"})
   @Get('find/:id')
